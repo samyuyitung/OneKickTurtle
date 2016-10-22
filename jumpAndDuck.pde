@@ -1,12 +1,14 @@
+
 import processing.serial.*;
 boolean sam = true;
 Serial myPort;  //the Serial port object
 String val;
 ArrayList<Enemy> enemies;
 Images imgs;
+int score;
 boolean newLevel = true;
 Player player;
-
+PFont comicSans; 
 int gameState = 1; //0 start screen, 1 in game, 2 game over
 int level = 1;
 void setup() {
@@ -20,6 +22,7 @@ void setup() {
   frameRate(60);
   imgs = new Images();
   enemies = new ArrayList<Enemy>();
+  comicSans = loadFont("ComicSans");
 }
 
 void draw() {
@@ -29,7 +32,7 @@ void draw() {
   } else if (gameState == 1) {
     if (newLevel)
       loadNewLevel();
-    background();
+    ui();
     doEnemys();
     doPlayer();
   } else if (gameState == 2) {
@@ -56,10 +59,13 @@ Enemy getNewEnemy(int i ) {
   else
     return new Enemy(1000 + (i * 200), -1 * ( level / 5 + 10), imgs.enemyRight);
 }
-void background() {
+void ui() {
   background(255);
   fill(0, 255, 0);
   rect(0, 300, 1000, 100);
+  textFont(comicSans,30);
+  text("Score : " + score,800,100);
+  text("Level : " + level,800,140);
 }
 
 void doPlayer() {
@@ -70,8 +76,10 @@ void doEnemys() {
     enemies.get(i).display();
     enemies.get(i).move();
     if (enemies.get(i).checkCollide(player.x, player.w)) {
-      if (player.isKicking() && enemies.get(i).dir == (-1 * player.kickDir))
+      if (player.isKicking() && enemies.get(i).dir == (-1 * player.kickDir)){
         enemies.remove(i);
+        ++score;
+      }
       else{
         gameState = 2;
         return;  
