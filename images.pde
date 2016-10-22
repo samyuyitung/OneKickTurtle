@@ -3,7 +3,7 @@ class Images {
   PImage enemyRight;
   
   Images() {
-    enemyLeft = loadImage("images/airplane.jpg");
-    enemyRight = loadImage("images/airplane.jpg");
+    enemyLeft = loadImage("images/kevin.png");
+    enemyRight = loadImage("images/Droid.jpg");
   }
 }
