@@ -2,19 +2,31 @@ import processing.serial.*;
 boolean sam = false;
 Serial myPort;  //the Serial port object
 String val;
+Rock[] rocks = new Rock[5];
+
 void setup() {
-  size(1280, 768);
+  size(1000, 800);
   if(sam){
     myPort = new Serial(this, Serial.list()[1], 9600);
     myPort.bufferUntil('\n');
   }
+  frameRate(60);
+  for(int i = 0; i < rocks.length; i++)
+    rocks[i] = new Rock(i * 100);
 }
 
 void draw() {
   arduino();
   background();
+  doRocks();
 }
 
+void doRocks(){
+    for(int i = 0; i < rocks.length; i++){
+       rocks[i].display();
+       rocks[i].move();
+    }
+}
 
 void arduino() {
   if(sam){
@@ -25,10 +37,10 @@ void arduino() {
     }
   }
 }
+
 void background() {
   noStroke();
-  fill(255);
-  rect(0, 0, 1280, 768);
+  background(255);
   fill(0, 255, 0);
-  rect(0, 668, 1280, 100);
+  rect(0, 700, 1000, 100);
 }
