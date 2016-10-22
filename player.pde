@@ -31,6 +31,8 @@ class Player {
     if (kickDir != 0 && frameCount - kickStart > 5) {
       kickDir = 0;
       currentImage = turtleNormal;
+      w = 50;
+      x = 475;
     }
   }
 
@@ -39,6 +41,8 @@ class Player {
       kickDir = dir;
       currentImage = dir == -1 ? turtleLeft : turtleRight;
       kickStart = frameCount;
+      w = 100;
+      x = 450;
     }
   }
   

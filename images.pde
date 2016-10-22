@@ -4,6 +4,6 @@ class Images {
   
   Images() {
     enemyLeft = loadImage("images/kevin.png");
-    enemyRight = loadImage("images/Droid.jpg");
+    enemyRight = loadImage("images/droid.jpg");
   }
 }
