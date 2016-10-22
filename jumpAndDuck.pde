@@ -1,15 +1,22 @@
 import processing.serial.*;
-boolean sam = false;
+boolean sam = true;
 Serial myPort;  //the Serial port object
 String val;
 ArrayList<Obstacle> obstacles;
 Images imgs;
+
+Player player;
+
+int gameState = 1; //0 start screen, 1 in game, 2 game over
+
 void setup() {
-  size(1000, 800);
+  size(1000, 400);
+  noStroke();
   if (sam) {
     myPort = new Serial(this, Serial.list()[1], 9600);
     myPort.bufferUntil('\n');
   }
+  player = new Player(200, 250);
   frameRate(60);
   imgs = new Images();
   obstacles = new ArrayList<Obstacle>();
@@ -32,39 +39,73 @@ Obstacle setupObs(Obstacle obs) {
 
 void draw() {
   arduino();
-  background();
-  doObstacles();
+  if (gameState == 0) {
+    startScreen();
+  } else if (gameState == 1) {
+    background();
+    doObstacles();
+    doPlayer();
+  }
+}
+/****** Start game *******/
+
+void startScreen() {
+}
+/****** end Start game *******/
+/******    In game    *******/
+void background() {
+  background(255);
+  fill(0, 255, 0);
+  rect(0, 300, 1000, 100);
 }
 
+void doPlayer() {
+  player.display();
+}
 void doObstacles() {
   for (int i = 0; i < obstacles.size(); i++) {
-      println(obstacles.get(i).x);
     obstacles.get(i).display();
     if (!obstacles.get(i).move())
       obstacles.remove(i);
+    if (obstacles.get(i).checkCollide(player.pxPos, player.pyPos, player.w, player.h))
+      gameState = 2;
   }
-  
-    if (frameCount % 45 == 0) {
-      obstacles.add(setupObs(new Obstacle(1250)));
-    }
+
+  if (frameCount % 45 == 0) {
+    obstacles.add(setupObs(new Obstacle(1050)));
+  }
 }
+
+
+/***** end in game *****/
+
+/***** Utils *****/
 
 void arduino() {
   if (sam) {
     if ( myPort.available() > 0) {
       val = myPort.readStringUntil('\n');
-      if (val != null)
+      if (val != null) {
+        val = trim(val);
+        println("/" + val + "/");
         if (val.equals("JUMP"))
-          println("Jump");
+          player.jump();
         else if (val.equals("DUCK"))
-          println("Ducking");
+          player.duck();
+      }
     }
   }
 }
 
-void background() {
-  noStroke();
-  background(255);
-  fill(0, 255, 0);
-  rect(0, 700, 1000, 100);
+void jumpPressed() {
+  if (gameState == 0) {
+    gameState = 1;
+  }
+}
+
+void keyPressed() {
+  if (key == ' ')
+    player.jump();
+  if (key == 'z')
+    player.duck();
 }

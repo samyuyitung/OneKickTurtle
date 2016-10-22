@@ -14,16 +14,16 @@ class Obstacle {
   }
 
   void setCar(PImage src) {
-    y = 670;
-    w = 100;
-    h = 50;
+    y = 275;
+    w = 96;
+    h = 25;
     speed = 3;
     image = src; 
   }
   void setPlane(PImage src) {
-    y = 550;
-    w = 100;
-    h = 50;
+    y = 200;
+    w =97;
+    h = 28;
     speed = 5;
     image = src;
   }
@@ -38,5 +38,13 @@ class Obstacle {
       return false;
     else
       return true;
+  }
+  
+  
+  boolean checkCollide(int px, int py, int pWidth, int pHeight){
+    if(px + pWidth >= x && px <= x + w && py + pHeight >= y && py <= y + h)
+       return true;
+     return false;
+    
   }
 }

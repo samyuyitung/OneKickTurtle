@@ -15,7 +15,7 @@ void loop() {
 
 void JUMP_BUTTON_ISR() {
   if (millis() - lastJump > 250) {
-    Serial.print("JUMP");
+    Serial.println("JUMP");
     lastJump = millis();
   }
 }
