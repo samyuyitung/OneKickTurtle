@@ -2,8 +2,8 @@ import processing.serial.*;
 boolean sam = false;
 Serial myPort;  //the Serial port object
 String val;
-Obstacle[] obstacles = new Obstacle[5];
-
+ArrayList<Obstacle> obstacles;
+Images imgs;
 void setup() {
   size(1000, 800);
   if (sam) {
@@ -11,23 +11,23 @@ void setup() {
     myPort.bufferUntil('\n');
   }
   frameRate(60);
-  for (int i = 0; i < obstacles.length; i++){
-    obstacles[i] = new Obstacle(width + (i * (width / obstacles.length)));
-    setupObs(obstacles[i]);
-}
+  imgs = new Images();
+  obstacles = new ArrayList<Obstacle>();
+  obstacles.add(setupObs(new Obstacle(1250)));
 }
 
-void setupObs(Obstacle obs){
+Obstacle setupObs(Obstacle obs) {
   switch((int) random(0, 2)) {
   case 0: 
-    obs.setPlane();
+    obs.setPlane(imgs.plane);
     break;
   case 1:
-    obs.setCar();
+    obs.setCar(imgs.car);
     break;
   }
+  return obs;
 }
-  
+
 
 
 void draw() {
@@ -37,11 +37,16 @@ void draw() {
 }
 
 void doObstacles() {
-  for (int i = 0; i < obstacles.length; i++) {
-    obstacles[i].display();
-    if (!obstacles[i].move())
-      reincarnate(obstacles[i]);
+  for (int i = 0; i < obstacles.size(); i++) {
+      println(obstacles.get(i).x);
+    obstacles.get(i).display();
+    if (!obstacles.get(i).move())
+      obstacles.remove(i);
   }
+  
+    if (frameCount % 45 == 0) {
+      obstacles.add(setupObs(new Obstacle(1250)));
+    }
 }
 
 void arduino() {
@@ -49,7 +54,10 @@ void arduino() {
     if ( myPort.available() > 0) {
       val = myPort.readStringUntil('\n');
       if (val != null)
-        println(val);
+        if (val.equals("JUMP"))
+          println("Jump");
+        else if (val.equals("DUCK"))
+          println("Ducking");
     }
   }
 }
@@ -59,10 +67,4 @@ void background() {
   background(255);
   fill(0, 255, 0);
   rect(0, 700, 1000, 100);
-}
-
-void reincarnate(Obstacle obs) {
-  println("REMAKING");
-  obs.x = 1000;
-  setupObs(obs);
 }

@@ -6,37 +6,35 @@ class Obstacle {
   int h;
 
   int speed;
-
-  color kolor;
+  
+  PImage image;
 
   Obstacle (int ax){
     x = ax;
   }
 
-  void setCar() {
-    y = 600;
-    w = 50;
+  void setCar(PImage src) {
+    y = 670;
+    w = 100;
     h = 50;
     speed = 3;
-    kolor = #FF0000;
+    image = src; 
   }
-  void setPlane() {
+  void setPlane(PImage src) {
     y = 550;
-    w = 50;
+    w = 100;
     h = 50;
     speed = 5;
-    kolor = #FF0000;
+    image = src;
   }
   
   void display() {
-    noStroke();
-    fill(kolor);
-    rect(x, y, w, h);
+    image(image, x, y);
   }
 
   boolean move() {
     x -= speed;
-    if(x < 0)
+    if(x + w + 10 < 0)
       return false;
     else
       return true;
