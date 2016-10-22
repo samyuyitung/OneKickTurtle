@@ -1,48 +1,31 @@
 class Player {
-  int pxPos; // player x position
-  int pyPos; // player y position
+  int x; // player x position
+  int y; // player y position
   color pCol = #000000;// player color
-  int w = 40; // width
-  int h = 40; // height
-  boolean jump = false; //if true player is jumping
-  boolean duck = false;
-  int jStart;
-  int dStart;
+  int w = 50; // width
+  int h = 100; // height
+  boolean punching = false; //if true player is jumping
+  int punchStart;
+  int punchDir = 0; 
 
   Player (int xPos, int yPos) {
-    pxPos = xPos;
-    pyPos = yPos;
+    x = xPos;
+    y = yPos;
   }
 
 
   void display() {
     fill(pCol);
-    rect(pxPos, pyPos, w, h);
-    if (jump && frameCount - jStart > 60) {
-      pyPos += 50;
-      jump = false;
-    }
-    if (duck && frameCount - dStart > 40) {
-      pyPos -= 20;
-      h +=20;
-      duck = false;
+    rect(x, y, w, h);
+    if (punchDir != 0 && frameCount - punchStart > 30) {
+      punchDir = 0;
     }
   }
 
-  void jump() {
-    if (!jump) {
-      jump = true;
-      pyPos -=50;
-      jStart = frameCount;
-    }
-  }
-
-  void duck() {
-    if (!duck && !jump) {
-      duck = true;
-      pyPos += 20;
-      h -= 20;
-      dStart = frameCount;
+  void punch(int dir) {
+    if (punchDir == 0) {
+      punchDir = dir;
+      punchStart = frameCount;
     }
   }
 }

@@ -1,15 +1,15 @@
 class Images {
-  PImage user;
-  PImage car;
-  PImage plane;
+  PImage bruce;
+  PImage enemyLeft;
+  PImage enemyRight;
 
   String userImage = "";
-  String carImage = "images/car.png";
-  String planeImage = "images/airplane.jpg";
+  String enemyLeftImage = "images/car.png";
+  String enemyRightImage = "images/airplane.jpg";
 
   Images() {
     //    user = loadImage(userImage);
-    car = loadImage(carImage);
-    plane = loadImage(planeImage);
+    enemyLeft = loadImage(enemyLeftImage);
+    enemyRight = loadImage(enemyRightImage);
   }
 }

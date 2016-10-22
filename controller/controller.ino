@@ -15,14 +15,14 @@ void loop() {
 
 void JUMP_BUTTON_ISR() {
   if (millis() - lastJump > 250) {
-    Serial.println("JUMP");
+    Serial.println("LEFT");
     lastJump = millis();
   }
 }
 
 void DUCK_BUTTON_ISR() {
   if (millis() - lastDuck > 250) {
-    Serial.println("DUCK");
+    Serial.println("RIGHT");
     lastDuck = millis();
   }
 }
