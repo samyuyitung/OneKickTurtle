@@ -32,7 +32,7 @@ class Enemy {
   }
   
   
-  boolean checkCollide(int px, int py, int pWidth, int pHeight){
+  boolean checkCollide(int px, int pWidth){
     if((dir == -1 && px + pWidth >= x) || (dir == 1 && px <= x + w))
        return true;
      return false;

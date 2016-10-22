@@ -22,7 +22,6 @@ void setup() {
   enemies = new ArrayList<Enemy>();
 }
 
-
 void draw() {
   arduino();
   if (gameState == 0) {
@@ -33,6 +32,8 @@ void draw() {
     background();
     doEnemys();
     doPlayer();
+  } else if (gameState == 2) {
+    gameOverScreen();
   }
 }
 
@@ -43,18 +44,17 @@ void startScreen() {
 /****** end Start game *******/
 /******    In game    *******/
 void loadNewLevel() {
-  for (int i = 0; i < level; i ++){
+  for (int i = 0; i < level; i ++) 
     enemies.add(getNewEnemy(i));
-    println(enemies.get(i).speed);  
-}
+  
   newLevel = false;
   level++;
 }
 Enemy getNewEnemy(int i ) {
-  if (((int)random(0,2)) == 0)
-    return new Enemy(-50 - (i * 150), 1 * ( level / 5 + 10), imgs.enemyLeft);
+  if (((int)random(0, 2)) == 0)
+    return new Enemy(-50 - (i * 200), 1 * ( level / 5 + 10), imgs.enemyLeft);
   else
-    return new Enemy(1000 + (i * 150), -1 * ( level / 5 + 10), imgs.enemyRight);
+    return new Enemy(1000 + (i * 200), -1 * ( level / 5 + 10), imgs.enemyRight);
 }
 void background() {
   background(255);
@@ -69,8 +69,13 @@ void doEnemys() {
   for (int i = 0; i < enemies.size(); i++) {
     enemies.get(i).display();
     enemies.get(i).move();
-    if (enemies.get(i).checkCollide(player.x, player.y, player.w, player.h)) {
-      enemies.remove(i);
+    if (enemies.get(i).checkCollide(player.x, player.w)) {
+      if (player.isKicking() && enemies.get(i).dir == (-1 * player.kickDir))
+        enemies.remove(i);
+      else{
+        gameState = 2;
+        return;  
+    }  
     }
   }
   if (enemies.size() == 0)
@@ -79,7 +84,12 @@ void doEnemys() {
 
 
 /***** end in game *****/
-
+void gameOverScreen(){
+ background(0);
+ fill(255);
+ text("You lose",100,100);
+  
+}
 /***** Utils *****/
 
 void arduino() {
@@ -88,11 +98,10 @@ void arduino() {
       val = myPort.readStringUntil('\n');
       if (val != null) {
         val = trim(val);
-        println("/" + val + "/");
         if (val.equals("JUMP"))
-          player.punch(1);
+          player.kick(1);
         else if (val.equals("DUCK"))
-          player.punch(-1);
+          player.kick(-1);
       }
     }
   }
@@ -106,7 +115,7 @@ void jumpPressed() {
 
 void keyPressed() {
   if (key == 'm')
-    player.punch(1);
+    player.kick(1);
   if (key == 'z')
-    player.punch(-1);
+    player.kick(-1);
 }
