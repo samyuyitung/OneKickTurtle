@@ -2,8 +2,7 @@ class Player {
   int x; // player x position
   int y; // player y position
   color pCol = #000000;// player color
-  int w = 50; // width
-  int h = 78; // height
+  int w = 61; // width
   boolean kicking = false; //if true player is jumping
   int kickStart;
   int kickDir = 0; 

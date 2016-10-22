@@ -18,10 +18,10 @@ class Enemy {
 
     if (aSpeed < 0 ) {
       dir = -1;
-      y = 176;
+      y = 170;
     } else {
       dir = 1;
-      y = 222;
+      y = 219;
     }
     image = src;
   }

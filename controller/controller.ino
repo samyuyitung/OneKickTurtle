@@ -4,8 +4,8 @@ int lastInput = 0;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  attachInterrupt(0, RIGHT_BUTTON_ISR, HIGH); //Pin 2
-  attachInterrupt(1, LEFT_BUTTON_ISR, HIGH); //Pin 3
+  attachInterrupt(0, RIGHT_BUTTON_ISR, FALLING); //Pin 2
+  attachInterrupt(1, LEFT_BUTTON_ISR, FALLING); //Pin 3
 //  pinMode(leftPin, INPUT);
 //  pinMode(rightPin, INPUT);
 
@@ -21,14 +21,14 @@ void loop() {
 }
 
 void RIGHT_BUTTON_ISR() {
-  if (millis() - lastInput > 250) {
+  if (millis() - lastInput > 200) {
     Serial.println("RIGHT");
     lastInput = millis();
   }
 }
 
 void LEFT_BUTTON_ISR() {
-  if (millis() - lastInput > 250) {
+  if (millis() - lastInput > 200) {
     Serial.println("LEFT");
     lastInput = millis();
   }

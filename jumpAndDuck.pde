@@ -1,20 +1,28 @@
+
 import processing.serial.*;
+
+
+int testing = 0;
 boolean sam = true;
 Serial myPort;  //the Serial port object
 String val;
 ArrayList<Enemy> enemies;
 Images imgs;
+int score;
 boolean newLevel = true;
 Player player;
-
 int gameState = 0; //0 start screen, 2 in game, 3 game over
-int level = 1;
+
+int level = 0;
 int pregameDelay;
 int deathTime;
-
+int lastInput = 0;
 PImage skeleton;
 boolean meme = false;
 int skeletonRotation;
+
+PFont comicSans;
+
 void setup() {
   size(1000, 400);
   skeleton = loadImage("images/skeleton.png");
@@ -28,6 +36,7 @@ void setup() {
   frameRate(60);
   imgs = new Images();
   enemies = new ArrayList<Enemy>();
+  comicSans = loadFont("ComicSansMS-48.vlw");
 }
 
 void draw() {
@@ -35,16 +44,14 @@ void draw() {
   if (gameState == 0) {
     startScreen();
   } else if (gameState == 1) {
+    ui();
+    doPlayer();
     if (timeSince(pregameDelay) < 179) {
-      makeBackground();
-      doPlayer();
       countDown();
     } else {
       if (newLevel)
         loadNewLevel();
-      makeBackground();
       doEnemys();
-      doPlayer();
     }
   } else if (gameState == 2) {
     gameOverScreen();
@@ -60,7 +67,7 @@ void memes () {
 }
 void startScreen() {
   background(0);
-  textSize(32);
+  textFont(comicSans);
   fill(255);
   text("1 Kick Turtle", 450, 150); 
   fill((frameCount / 30 % 2) == 1 ? 0 : #FF0000);
@@ -75,22 +82,25 @@ void countDown() {
 }
 
 void loadNewLevel() {
+  level++;
   for (int i = 0; i < level; i ++) 
     enemies.add(getNewEnemy(i));
 
   newLevel = false;
-  level++;
 }
 Enemy getNewEnemy(int i ) {
   if (((int)random(0, 2)) == 0)
-    return new Enemy(-50 - (i * 200), 1 * ( level / 5 + 10), imgs.enemyLeft);
+    return new Enemy(-50 - (i * 200), 1 * ( level / 3 + 10), imgs.enemyLeft);
   else
-    return new Enemy(1000 + (i * 200), -1 * ( level / 5 + 10), imgs.enemyRight);
+    return new Enemy(1000 + (i * 200), -1 * ( level / 3 + 10), imgs.enemyRight);
 }
-void makeBackground() {
+void ui() {
   background(255);
   fill(0, 255, 0);
   rect(0, 300, 1000, 100);
+  textSize(30);
+  text("Score : " + score, 800, 50);
+  text("Wave  : " + (level == 0 ? "" : level), 800, 90);
 }
 
 void doPlayer() {
@@ -101,16 +111,16 @@ void doEnemys() {
   for (int i = 0; i < enemies.size(); i++) {
     enemies.get(i).display();
     if (enemies.get(i).checkCollide(player.x, player.w)) {
-      if (player.isKicking() && enemies.get(i).dir == (-1 * player.kickDir)){
+      if (player.isKicking() && enemies.get(i).dir == (-1 * player.kickDir)) {
         enemies.get(i).setDying();
-      }
-      else {
+        ++score;
+      } else {
         deathTime = frameCount;
         gameState = 2;
         return;
       }
     }
-    if(!enemies.get(i).move()){
+    if (!enemies.get(i).move()) {
       enemies.remove(i);
     }
   }
@@ -124,16 +134,20 @@ void gameOverScreen() {
   enemies.clear();
   background(0);
   fill(255);
-  text("You lose", 100, 100);
-  text("Press the red button to restart", 100, 150);
+  text("You lose", 300, 100);
+  text("You Made it to wave " + level, 300, 140);
+  
+  fill(#FF0000);
+  text("Press the red\nbutton to restart", 300, 220);
 }
 /***** Utils *****/
 
 void arduino() {
   if (sam) {
-    if ( myPort.available() > 0) {
+    if ( myPort.available() > 0 && timeSince(lastInput) > 5) {
       val = myPort.readStringUntil('\n');
       if (val != null) {
+        lastInput = frameCount;
         val = trim(val);
         if (val.equals("LEFT"))
           jumpPressed();
@@ -163,8 +177,10 @@ void duckPressed() {
 
 void resetGame() {
   pregameDelay = frameCount;
+  enemies.clear();
   level = 1;
   gameState = 1;
+  score = 0;
 }
 
 
@@ -175,6 +191,6 @@ void keyPressed() {
     player.kick(-1);
 }
 
-int timeSince(int time){
+int timeSince(int time) {
   return frameCount - time;
 }
