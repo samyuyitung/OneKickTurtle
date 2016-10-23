@@ -9,4 +9,4 @@ The controls are 'z' and 'm' of you want to play (note that 'm' is the main key 
 
 Picture of controller
 
-![](https://raw.githubusercontent.com/syuyitung/bop-it/master/controllerPicture.jpg)
+![](https://raw.githubusercontent.com/samyuyitung/OneKickTurtle/master/controllerPicture.jpg)
