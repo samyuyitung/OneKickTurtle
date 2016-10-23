@@ -20,7 +20,7 @@ int lastInput = 0;
 PImage skeleton;
 boolean meme = false;
 int skeletonRotation;
-
+int highScore; 
 PFont comicSans;
 
 void setup() {
@@ -78,7 +78,7 @@ void startScreen() {
 /****** end Start game *******/
 /******    In game    *******/
 void countDown() {
-  text("" + (3 -(timeSince(pregameDelay)) / 60), 100, 100);
+  text("" + (3 -(timeSince(pregameDelay)) / 60), 495, 100);
 }
 
 void loadNewLevel() {
@@ -134,17 +134,25 @@ void gameOverScreen() {
   enemies.clear();
   background(0);
   fill(255);
+  if (score > highScore) {
+    highScore = score;
+
+    text("High Score!!!!!!!!!!!!!!!!", 300, 500);
+  }
+
   text("You lose", 300, 100);
-  text("You Made it to wave " + level, 300, 140);
-  
-  fill(#FF0000);
+  text("You Kicked " + score + " baddies!", 300, 140);
+
+  fill((frameCount / 30 % 2) == 1 ? 0 : #FF0000);
   text("Press the red\nbutton to restart", 300, 220);
+  fill(255);
+  text("High score is " + highScore, 300, 330);
 }
 /***** Utils *****/
 
 void arduino() {
   if (sam) {
-    if ( myPort.available() > 0 && timeSince(lastInput) > 5) {
+    if ( myPort.available() > 0 /* && timeSince(lastInput) > 5 */) {
       val = myPort.readStringUntil('\n');
       if (val != null) {
         lastInput = frameCount;
@@ -178,8 +186,8 @@ void duckPressed() {
 void resetGame() {
   pregameDelay = frameCount;
   enemies.clear();
-  level = 1;
-  gameState = 1;
+  level = 0;
+  gameState = 0;
   score = 0;
 }
 
