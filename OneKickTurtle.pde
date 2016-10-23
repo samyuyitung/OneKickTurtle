@@ -88,7 +88,7 @@ void loadNewLevel() {
 }
 
 Enemy getNewEnemy(int i ) {
-  if (((int)random(0, 1)) == 0)
+  if (((int)random(0, 2)) == 0)
     return new Enemy(-50 - (i * 200), 1 * ( level / 3 + 10), imgs.enemyLeft);
   else
     return new Enemy(1000 + (i * 200), -1 * ( level / 3 + 10), imgs.enemyRight);
@@ -156,7 +156,7 @@ void arduino() {
     if (val != null) {
       val = trim(val);
       if (val.equals("RIGHT"))
-        rightPressed(); //I know this is backwards
+        rightPressed();
       else if (val.equals("LEFT"))
         leftPressed();
     }
