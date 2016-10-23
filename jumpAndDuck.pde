@@ -136,8 +136,7 @@ void gameOverScreen() {
   fill(255);
   if (score > highScore) {
     highScore = score;
-
-    text("High Score!!!!!!!!!!!!!!!!", 300, 500);
+    text("High Score!!!!!!!!!!!!!!!!", 300, 50);
   }
 
   text("You lose", 300, 100);
@@ -189,6 +188,8 @@ void resetGame() {
   level = 0;
   gameState = 0;
   score = 0;
+  
+  meme = false;
 }
 
 
