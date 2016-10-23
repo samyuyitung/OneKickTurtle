@@ -1,32 +1,30 @@
 class Player {
   int x; // player x position
   int y; // player y position
-  color pCol = #000000;// player color
   int w = 61; // width
-  boolean kicking = false; //if true player is jumping
   int kickStart;
-  int kickDir = 0; 
-  
+  int kickDir = 0;
+
   PImage turtleNormal;
   PImage turtleLeft;
   PImage turtleRight;
-  
+
   PImage currentImage;
 
   Player (int xPos, int yPos) {
     x = xPos;
     y = yPos;
-    
+	//Since there is only one player the pictures are loaded here,
+	// If there are multiple players these should go in the images class.
     turtleNormal = loadImage("images/ninja.jpg");
     turtleLeft = loadImage("images/kickLeft.jpg");
     turtleRight = loadImage("images/kickRight.jpg");
     currentImage = turtleNormal;
   }
 
-
   void display() {
-    fill(pCol);
     image(currentImage, x, y);
+	//Check to see if the kicking is done (after 5 frames)
     if (kickDir != 0 && frameCount - kickStart > 5) {
       kickDir = 0;
       currentImage = turtleNormal;
@@ -44,8 +42,8 @@ class Player {
       x = 450;
     }
   }
-  
+
   boolean isKicking(){
-    return kickDir != 0; 
+    return kickDir != 0;
   }
 }

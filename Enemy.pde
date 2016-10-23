@@ -1,5 +1,5 @@
 class Enemy {
-  int x; 
+  int x;
   int y;
 
   int w;
@@ -8,6 +8,7 @@ class Enemy {
   int speed;
 
   PImage image;
+
   boolean isDying;
   int deadTime;
 
@@ -25,14 +26,19 @@ class Enemy {
     }
     image = src;
   }
+
   void display() {
     image(image, x, y);
   }
+
   void setDying() {
     deadTime = frameCount;
     speed *= -6;
     isDying = true;
   }
+
+  //returns false if they are dying and go off the screen
+  //this is used to remove them from the arraylist once they are dead.
   boolean move() {
     if (isDying)
       y -= (int)random(15,40) *(frameCount - deadTime) - (4.9 * pow(frameCount - deadTime, 2));
@@ -42,7 +48,6 @@ class Enemy {
       return false;
     return true;
   }
-
 
   boolean checkCollide(int px, int pWidth) {
     if ((dir == -1 && px + pWidth >= x) || (dir == 1 && px <= x + w))

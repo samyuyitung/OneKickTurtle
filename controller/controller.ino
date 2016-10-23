@@ -1,23 +1,26 @@
-int leftPin = 3;
-int rightPin = 2;
+/***********************************************
+
+Controller code for the arduino, this is powered
+using interrupts on the buttons the basic setup is
+
+  vcc
+   |              interrupt pin
+   |                    |
+   |---<1kOhm Resistor>---<Button>---|
+                                     |
+                                    gnd
+
+this basic schematic can repeated for as many inputs as you want
+
+***********************************************/
 int lastInput = 0;
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(9600);
   attachInterrupt(0, RIGHT_BUTTON_ISR, FALLING); //Pin 2
   attachInterrupt(1, LEFT_BUTTON_ISR, FALLING); //Pin 3
-//  pinMode(leftPin, INPUT);
-//  pinMode(rightPin, INPUT);
-
 }
 
 void loop() {
-//  if(digitalRead(leftPin) == LOW)
-//      Serial.println("LEFT");
-//  else if(digitalRead(rightPin) == LOW)
-//        Serial.println("RIGHT");
-//
-//  delay(50);
 }
 
 void RIGHT_BUTTON_ISR() {
