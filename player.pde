@@ -25,11 +25,12 @@ class Player {
   void display() {
     image(currentImage, x, y);
 	//Check to see if the kicking is done (after 5 frames)
-    if (kickDir != 0 && frameCount - kickStart > 5) {
+    if (kickDir != 0 && frameCount - kickStart > 10) {
       kickDir = 0;
       currentImage = turtleNormal;
       w = 50;
       x = 475;
+      y += 7;
     }
   }
 
@@ -40,6 +41,7 @@ class Player {
       kickStart = frameCount;
       w = 100;
       x = 450;
+      y -= 7;
     }
   }
 

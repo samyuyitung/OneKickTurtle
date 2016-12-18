@@ -89,9 +89,9 @@ void loadNewLevel() {
 
 Enemy getNewEnemy(int i ) {
   if (((int)random(0, 2)) == 0)
-    return new Enemy(-50 - (i * 200), 1 * ( level / 3 + 10), imgs.enemyLeft);
+    return new Enemy(-50 - (i * 200), 1 * ( level / 3 + 7), imgs.enemyLeft);
   else
-    return new Enemy(1000 + (i * 200), -1 * ( level / 3 + 10), imgs.enemyRight);
+    return new Enemy(1000 + (i * 200), -1 * ( level / 3 + 7), imgs.enemyRight);
 }
 
 void ui() {
